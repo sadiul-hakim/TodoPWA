@@ -23,6 +23,15 @@ public class TodoService {
         return todoRepo.findAll();
     }
 
+    public void complete(long id) {
+        Todo todo = todoRepo.findById(id).orElse(null);
+        if (todo == null)
+            return;
+
+        todo.setCompleted(!todo.isCompleted());
+        todoRepo.save(todo);
+    }
+
     public void delete(long id) {
         todoRepo.deleteById(id);
     }

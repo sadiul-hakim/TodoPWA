@@ -32,4 +32,11 @@ public class TodoController {
         model.addAttribute("todos", service.findAll());
         return "todos :: todo-list";
     }
+
+    @PostMapping("/complete/{id}")
+    public String completeTodo(@PathVariable Long id, Model model) {
+        service.complete(id);
+        model.addAttribute("todos", service.findAll());
+        return "todos :: todo-list";
+    }
 }
