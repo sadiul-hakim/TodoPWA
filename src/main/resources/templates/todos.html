@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Todo List</title>
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</head>
+<body>
+<!--<button id="install-btn" style="display: none;">Install App</button>-->
+<h1>Todo List</h1>
+<form hx-post="/add" hx-trigger="submit" hx-target="#todo-list" hx-swap="outerHTML">
+    <input type="text" name="task" required>
+    <button type="submit">Add</button>
+</form>
+<div id="todo-list" th:fragment="todo-list">
+    <ul>
+        <li th:each="todo : ${todos}" th:id="'todo-' + ${todo.id}">
+            <span th:text="${todo.task}"></span>
+            <button th:hx-post="@{'/delete/' + ${todo.id}}" hx-target="#todo-list" hx-swap="outerHTML">
+                Delete
+            </button>
+        </li>
+    </ul>
+</div>
+</body>
+<!--<script>-->
+<!--    let deferredPrompt;-->
+
+<!--    window.addEventListener("beforeinstallprompt", (event) => {-->
+<!--        event.preventDefault();-->
+<!--        deferredPrompt = event;-->
+<!--        document.getElementById("install-btn").style.display = "block";-->
+<!--    });-->
+
+<!--    document.getElementById("install-btn").addEventListener("click", () => {-->
+<!--        if (deferredPrompt) {-->
+<!--            deferredPrompt.prompt();-->
+<!--            deferredPrompt.userChoice.then((choiceResult) => {-->
+<!--                if (choiceResult.outcome === "accepted") {-->
+<!--                    console.log("User accepted the install prompt");-->
+<!--                } else {-->
+<!--                    console.log("User dismissed the install prompt");-->
+<!--                }-->
+<!--                deferredPrompt = null;-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+
+<!--    setTimeout(() => {-->
+<!--        if (!deferredPrompt) {-->
+<!--            console.log("Install prompt was NOT fired. Check PWA requirements!");-->
+<!--        }-->
+<!--    }, 5000);-->
+<!--</script>-->
+</html>
