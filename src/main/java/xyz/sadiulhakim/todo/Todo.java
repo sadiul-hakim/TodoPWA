@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Todo {
 
@@ -13,14 +15,16 @@ public class Todo {
     private long id;
     private String task;
     private boolean completed;
+    private LocalDateTime creationDate;
 
     public Todo() {
     }
 
-    public Todo(long id, String task, boolean completed) {
+    public Todo(long id, String task, boolean completed, LocalDateTime creationDate) {
         this.id = id;
         this.task = task;
         this.completed = completed;
+        this.creationDate = creationDate;
     }
 
     public long getId() {
@@ -45,5 +49,13 @@ public class Todo {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 }

@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f4f4f4;
@@ -58,6 +58,12 @@
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        #todo-list {
+            padding: 10px;
+            height: 800px;
+            overflow: auto;
+        }
     </style>
 
     <link rel="manifest" th:href="@{/manifest.json}">
@@ -77,7 +83,11 @@
 <div id="todo-list" th:fragment="todo-list">
     <ul>
         <li th:each="todo : ${todos}" th:id="'todo-' + ${todo.id}">
-            <span th:text="${todo.task}"></span>
+            <div>
+                <span th:text="${todo.task}" style="font-size: 20px"></span><br/>
+                <span th:text="${#temporals.format(todo.creationDate, 'yyyy-MM-dd HH:mm:ss')}"
+                      style="color: rgba(65,63,63,0.81);font-size: 14px"></span>
+            </div>
             <button th:hx-post="@{'/delete/' + ${todo.id}}" hx-target="#todo-list" hx-swap="outerHTML">
                 Delete
             </button>
